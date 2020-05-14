@@ -4,6 +4,14 @@
 ---
 
 <h1 id="escalera-mecánica">Escalera Mecánica</h1>
+<p>Para llevar a cabo este proceso de creación del diagrama de estados para la escalera mecánica (así también para los medas diagramas realizados en el presente trabajo práctico) se siguió el siguiente paso a paso:<br>
+1ero: Se procedió a identificar los eventos y acciones del modelo.<br>
+2do: Se identificaron los estados.<br>
+3ero: Se agrupó por jerarquías.<br>
+4to: Se agrupó por concurrencia.<br>
+5to: Se añadieron las transiciones entre los estados.<br>
+6to: Se añadieron las sincronizaciones.<br>
+También se siguió la tipografía deseada por la cátedra para llamar a los eventos, operaciones, etc.</p>
 <h2 id="consigna">Consigna:</h2>
 <p><img src="https://lh6.googleusercontent.com/YSecMkvKPss2T-YVn43yP1OtvINNU905wNDSscHXJbgdWAyZQMgF43QhHzrItfPuALVBb6o3fyFdGlNV4s4EjvmtCiJZgGXCETffkMXX4v3ABX8SExrMbpXIYzf83dClQQXYWr7F" alt=""></p>
 <h2 id="complejización-del-modelo">Complejización del modelo</h2>

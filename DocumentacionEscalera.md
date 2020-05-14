@@ -27,6 +27,33 @@ También se siguió la tipografía deseada por la cátedra para llamar a los eve
 </ul>
 <p>Para continuar complejizando este modelo, también se le añadió el caso en que más de una persona quiera subir o bajar. En este caso se le agrega un sistema de conteo de personas en la escalera. Pasaremos a explicarlo con un ejemplo:</p>
 <p>Si hay una persona subiendo y antes de que ésta llegue al final otra comienza a subir, entonces la escalera no se detendrá hasta que ambas lleguen a bajarse. Esto se extiende a N personas y análogamente para casos de bajada.</p>
+<h2 id="estados">Estados</h2>
+<ul>
+<li>
+<p>STOP, en este estado la escalera estará detenida.</p>
+</li>
+<li>
+<p>BAJAR, en este estado la escalera estará bajando.</p>
+</li>
+<li>
+<p>SUBIR, en este estado la escalera estará subiendo.</p>
+</li>
+<li>
+<p>FINALIZÓ BAJADA, este estado se accederá cuando una persona haya terminado de bajar.</p>
+</li>
+<li>
+<p>FINALIZÓ SUBIDA, este estado se accederá cuando una persona haya terminado de subir.</p>
+</li>
+<li>
+<p>APAGADA, en este estado la luz correspondiente se encontrará apagada.</p>
+</li>
+<li>
+<p>ENCENDIDA, en este estado la luz correspondiente se encontrará encendida.</p>
+</li>
+<li>
+<p>TOGGLE, en este estado la luz correspondiente estará titilando.</p>
+</li>
+</ul>
 <h2 id="eventos">Eventos</h2>
 <ul>
 <li>
@@ -99,7 +126,7 @@ También se siguió la tipografía deseada por la cátedra para llamar a los eve
 </ul>
 <h2 id="capturas-de-los-diagramas">Capturas de los diagramas</h2>
 <h2 id="región-principal">Región principal</h2>
-<p><img src="https://lh6.googleusercontent.com/ywEhhxOVh8BSxWREv_cr6Yb9Cl86DaeMyhH7tOIAHdCLa64GLeZ-cDyEE6_uITaVO2mvm-XxVb0IZkLiWdkqHjZzR1Z1KeTG26TpuF_f07HLyXlwtcUxRiNVB7QVZDh0nVyTKPFo" alt=""></p>
+<p><strong><img src="https://lh4.googleusercontent.com/fhvWv4Hit-_V3wtAbOq0-psR2mYILokjEVU8VxMDeoTfLXvkiqJroEz_aUlDkIHoO98TC0aZMorwAjs1-NSbJsSozRlnvL_4ccdqri0ByYUZ4UPWQNcqrhWqVrcUOeyb5-acOpcQ" alt=""></strong></p>
 <h2 id="región-de-las-luces">Región de las luces</h2>
 <p><img src="https://lh4.googleusercontent.com/20BSjHuJaO0HnlWb0ja6XHG22rMqhD2atvUQDx_6eHn1PJ0X9cMs5VQC-8SNVVDhqtvMQhTFhP20IRYz9ScqxajLuC8JyrSBYyVv1Wo0uxB-i-pgdNIGpwI82b_BPotpDMlS3ETh" alt=""></p>
 

@@ -35,6 +35,7 @@
 # Capturas de los diagramas:
 
 **Región principal:**
+
 **![](https://lh3.googleusercontent.com/y8Br1Axsk5RNu0FGKFnQ-YZlMcozFcIdlVJBN_igBQHLNq2-OBAKHeBzmybJvtACdzC-sDHC4IzVjD7jrHITzcBQbEqC9saqWnZ0e8OGViq8x0d77SvOcBh5ZUjgMbYHMnM-JGY)**
 
 **Regiones de luces:** 

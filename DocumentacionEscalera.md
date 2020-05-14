@@ -3,95 +3,66 @@
 
 ---
 
-<h1 id="escalera-mecánica">Escalera Mecánica</h1>
+<h1 id="portón-levadizo">Portón Levadizo</h1>
 <h2 id="consigna">Consigna:</h2>
-<p><img src="https://lh6.googleusercontent.com/YSecMkvKPss2T-YVn43yP1OtvINNU905wNDSscHXJbgdWAyZQMgF43QhHzrItfPuALVBb6o3fyFdGlNV4s4EjvmtCiJZgGXCETffkMXX4v3ABX8SExrMbpXIYzf83dClQQXYWr7F" alt=""></p>
-<h2 id="complejización-del-modelo">Complejización del modelo</h2>
-<p>Para complejizar el modelo, se le añadieron luces en ambos extremos de la escalera, es decir, luces como parte del sensor 1 y otras luces como parte del sensor 2.</p>
-<p>Las que funcionan de la siguiente manera:</p>
+<p><img src="https://lh6.googleusercontent.com/IMSzavElGW2vu6otsqCmaRuk-_wQ370cvL0lqI2hAEby8OFj16cXbH47JlFOA9yaRCnsY4SEa_El6QooKsp8AJNeBTD0KPohMEA_ta00ixMH3_mKjYdfx2O0Z4igoJroZV16y3cH" alt=""></p>
+<h2 id="eventos">Eventos:</h2>
 <ul>
 <li>
-<p>Cuando la escalera esté en STOP, las luces verdes de ambos sensores estarán encendidas, mostrando que la escalera está ‘Libre’.</p>
+<p>in event evRemoto ; Indica la presión del botón del control remoto.</p>
 </li>
 <li>
-<p>Cuando la escalera esté en movimiento, las luces rojas de ambos sensores comenzarán a titilar indicando que la escalera está en uso.</p>
+<p>in event evAbrio ; Indica cuando el portón terminó de abrir.</p>
+</li>
+<li>
+<p>in event evCerro ; Indica cuando el portón terminó de cerrar.</p>
 </li>
 </ul>
-<p>Para continuar complejizando este modelo, también se le añadió el caso en que más de una persona quiera subir o bajar. En este caso se le agrega un sistema de conteo de personas en la escalera. Pasaremos a explicarlo con un ejemplo:</p>
-<p>Si hay una persona subiendo y antes de que ésta llegue al final otra comienza a subir, entonces la escalera no se detendrá hasta que ambas lleguen a bajarse. Esto se extiende a N personas y análogamente para casos de bajada.</p>
-<h2 id="eventos">Eventos</h2>
+<h2 id="operaciones">Operaciones:</h2>
 <ul>
 <li>
-<p>in event evPresionS1 ; Se activa al activarse el sensor de presión 1, en este caso el de abajo.</p>
+<p>operation opMotor(Action:boolean, State:boolean):void ; Encenderá o apagará el motor según digan sus argumentos.</p>
 </li>
 <li>
-<p>in event evPresionS2 ; Se activa al activarse el sensor de presión 2, en este caso el de arriba.</p>
+<p>operation opLuzRoja(Action:boolean, State:boolean):void ; Encenderá o apagará la luz roja según digan sus argumentos.</p>
+</li>
+<li>
+<p>operation opLuzVerde(Action:boolean, State:boolean):void ; Encenderá o apagará la luz verde según digan sus argumentos.</p>
 </li>
 </ul>
-<h2 id="operaciones">Operaciones</h2>
+<h2 id="constantes">Constantes:</h2>
 <ul>
 <li>
-<p>operation opSubir(Action:boolean, Status:boolean): void ; Activa la escalera en la dirección correspondiente para subir.</p>
+<p>const OPEN:boolean = true ; Indicará que el portón debe abrirse.</p>
 </li>
 <li>
-<p>operation opBajar(Action:boolean, Status:boolean): void ; Activa la escalera en la dirección correspondiente para bajar.</p>
+<p>const CLOSE:boolean = false ; Indicará que el portón debe cerrarse.</p>
 </li>
 <li>
-<p>operation opStop(Action:boolean, Status:boolean): void ; Hace frenar a la escalera.</p>
+<p>const ON:boolean = true ; Prenderá cierta función.</p>
 </li>
 <li>
-<p>operation opLuzRojaS1(Action:boolean, State:boolean):void ; Activa la luz roja del sensor 1 en la acción que corresponda.</p>
+<p>const OFF:boolean = false ; Apagará cierta función.</p>
 </li>
 <li>
-<p>operation opLuzVerdeS1(Action:boolean, State:boolean):void ; Activa la luz verde del sensor 1 en la acción que corresponda.</p>
-</li>
-<li>
-<p>operation opLuzRojaS2(Action:boolean, State:boolean):void ; Activa la luz roja del sensor 2 en la acción que corresponda.</p>
-</li>
-<li>
-<p>operation opLuzVerdeS2(Action:boolean, State:boolean):void ; Activa la luz verde del sensor 2 en la acción que corresponda.</p>
-</li>
-</ul>
-<h2 id="constantes">Constantes</h2>
-<ul>
-<li>
-<p>const ON: boolean = true ; Para encender una función.</p>
-</li>
-<li>
-<p>const OFF: boolean = false ; Para apagar una función.</p>
-</li>
-<li>
-<p>const ONoFF:boolean = true ; Encender o apagar una función.</p>
+<p>const ONoFF:boolean = true ; Prenderá o apagará cierta función.</p>
 </li>
 <li>
 <p>const TOGGLE:boolean = false ; Para realizar el toggle.</p>
 </li>
-<li>
-<p>const SUBIR: boolean = true ; Indica que la escalera debe subir.</p>
-</li>
-<li>
-<p>const BAJAR: boolean = false ; Indica que la escalera debe bajar.</p>
-</li>
-<li>
-<p>const STOP: boolean = true ; Indica que la escalera debe parar.</p>
-</li>
 </ul>
-<h2 id="variables">Variables</h2>
-<ul>
-<li>var personas: integer = 1 ; Variable para el conteo de personas.</li>
-</ul>
-<h2 id="señales">Señales</h2>
+<h2 id="señales">Señales:</h2>
 <ul>
 <li>
-<p>event siRojo ; Señal que activa la luz roja.</p>
+<p>event siTitilar ; Señal que indicará que una luz debe titilar.</p>
 </li>
 <li>
-<p>event siVerde ; Señal que activa la luz verde.</p>
+<p>event siNoTitilar ; Señal que indicará que una luz debe dejar de titilar.</p>
 </li>
 </ul>
-<h2 id="capturas-de-los-diagramas">Capturas de los diagramas</h2>
-<h2 id="región-principal">Región principal</h2>
-<p><img src="https://lh6.googleusercontent.com/ywEhhxOVh8BSxWREv_cr6Yb9Cl86DaeMyhH7tOIAHdCLa64GLeZ-cDyEE6_uITaVO2mvm-XxVb0IZkLiWdkqHjZzR1Z1KeTG26TpuF_f07HLyXlwtcUxRiNVB7QVZDh0nVyTKPFo" alt=""></p>
-<h2 id="región-de-las-luces">Región de las luces</h2>
-<p><img src="https://lh4.googleusercontent.com/20BSjHuJaO0HnlWb0ja6XHG22rMqhD2atvUQDx_6eHn1PJ0X9cMs5VQC-8SNVVDhqtvMQhTFhP20IRYz9ScqxajLuC8JyrSBYyVv1Wo0uxB-i-pgdNIGpwI82b_BPotpDMlS3ETh" alt=""></p>
+<h2 id="capturas-de-los-diagramas">Capturas de los diagramas:</h2>
+<h2 id="región-principal">Región principal:</h2>
+<p><img src="https://lh5.googleusercontent.com/Mh7Pn-8fMXDcGiFeeqQ9OaGag67LSimYlL1gHYhpALqbmSXgOnYBKFjA8xGdyZQKJOFXNRlBgKd9Q_eMWuOslmTQ51c1zC-BoawVsI3jJui9EMBSXSvotswIjmhC-PQfrqKxHc8b" alt=""></p>
+<h2 id="regiones-de-luces">Regiones de luces:</h2>
+<p><img src="https://lh3.googleusercontent.com/NPGmc63MYZ3t9jeeJXXLcKdzCXN1nF6Rwu_5yp-lwp6_HdBhWP409r7VcKIqAT5Y5ftRvHm0GxFvKid9_8u3F67tGGlortbz3JHm1kv30-GPpF1soW_sa38ukD0ObhESNnEFiSi-" alt=""></p>
 

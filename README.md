@@ -1,15 +1,12 @@
-﻿---
-
-
 ---
 
-<h1 id="tp1---sistemas-embebidos">TP1 - SISTEMAS EMBEBIDOS</h1>
-<h2 id="grupo-3">Grupo 3</h2>
-<ul>
-<li>Barrionuevo Facundo, Padrón: 99280.</li>
-<li>Centofanti Ezequiel, Padrón: 100941.</li>
-<li>Scheinkerman Lucas, Padrón: 100047.</li>
-</ul>
+# TP1 - SISTEMAS EMBEBIDOS
+
+**Grupo 3**
+
+- [Barrionuevo Facundo](https://github.com/faqbarrionuevo/SistemasEmbebidos), Padrón: 99280 [Repo Grupo 3]
+- [Centofanti Ezequiel](https://github.com/CentofantiEze/Sistemas-Embebidos.git), Padrón: 100941   
+- Scheinkerman Lucas, Padrón: 100047
 
 # Instalación de herramientas
 
@@ -54,3 +51,4 @@ Para simularlo hace clic derecho y se selecciona la opción RunAs>StatechartSimu
 **![](https://lh3.googleusercontent.com/Z9ltFppJHIy7zgW_w37GYCom4WAMQD_Cac5tiUWuga1IbZJWDz3e5r0St7oFLfNw59kpojdS-nLECn3uRhvxFlYIrHgH2ilEAKcyIDuQ_msF1BVvxCPGyNv3H6eLrpq1hKnxnulG)**
 
 Se puede ver el diagrama en la pantalla principal y a derecha el menú con los eventos para simular.
+

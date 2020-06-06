@@ -2,7 +2,6 @@
 #define _my_gpio_h_
 
 #include "stdint.h"
-#include "gpio_18xx_43xx.h"
 #include "chip.h"
 
 #ifndef FALSE

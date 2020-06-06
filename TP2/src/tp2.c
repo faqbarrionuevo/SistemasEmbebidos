@@ -5,7 +5,7 @@
  *===========================================================================*/
 
 // Inlcusiones
-
+#include <stdio.h>
 #include "../inc/tp2.h"         // <= Su propia cabecera
 
 //#include "../../../../libs/lpc_open/lpc_chip_43xx/inc/chip_lpc43xx.h"

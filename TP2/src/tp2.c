@@ -8,7 +8,8 @@
 
 #include "../inc/tp2.h"         // <= Su propia cabecera
 
-#include "myGpio.h"        // <= Biblioteca sAPI
+//#include "../../../../libs/lpc_open/lpc_chip_43xx/inc/chip_lpc43xx.h"
+#include "myGpio.h"        // <= Biblioteca propia
 
 // FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE ENCENDIDO O RESET.
 int main( void )
@@ -67,7 +68,7 @@ int main( void )
          }
       } else {
          // Intercambiar el valor de CIAA_BOARD_LED
-         myGpioToggle(CIAA_BOARD_LED);
+         //myGpioToggle(CIAA_BOARD_LED);
       }
    }
 

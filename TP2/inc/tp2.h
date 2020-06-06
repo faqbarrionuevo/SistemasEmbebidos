@@ -19,6 +19,9 @@ extern "C" {
 
 /*==================[tipos de datos declarados por el usuario]===============*/
 
+#define CIAA_BOARD_BUTTON TEC1
+#define CIAA_BOARD_LED LED1
+
 /*==================[declaraciones de datos externos]========================*/
 
 /*==================[declaraciones de funciones externas]====================*/

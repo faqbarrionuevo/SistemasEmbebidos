@@ -1,6 +1,6 @@
 #include "myGpio.h"
 
-const gpioPinInfo_t gpioPinsInit[] = {
+static const gpioPinInfo_t gpioPinsInit[] = {
 
 		//{PinNamePortN ,PinNamePinN, PinFUNC, GpioPortN, GpioPinN}
 
@@ -18,7 +18,29 @@ const gpioPinInfo_t gpioPinsInit[] = {
 
 };
 
-static void gpioObtainPinInit( gpioMap_t pin,
+void myBoardConfig(void) {
+	SystemCoreClockUpdate();
+
+
+	// Inicializar GPIOs
+	      myGpioInit( 0, GPIO_ENABLE );
+
+	      // Configuracion de pines de entrada para Teclas de la EDU-CIAA-NXP
+	      myGpioInit( TEC1, GPIO_INPUT );
+	      myGpioInit( TEC2, GPIO_INPUT );
+	      myGpioInit( TEC3, GPIO_INPUT );
+	      myGpioInit( TEC4, GPIO_INPUT );
+
+	      // Configuracion de pines de salida para Leds de la EDU-CIAA-NXP
+	      myGpioInit( LEDR, GPIO_OUTPUT );
+	      myGpioInit( LEDG, GPIO_OUTPUT );
+	      myGpioInit( LEDB, GPIO_OUTPUT );
+	      myGpioInit( LED1, GPIO_OUTPUT );
+	      myGpioInit( LED2, GPIO_OUTPUT );
+	      myGpioInit( LED3, GPIO_OUTPUT );
+}
+
+void gpioObtainPinInit( gpioMap_t pin,
                                int8_t *pinNamePort, int8_t *pinNamePin,
                                int8_t *func, int8_t *gpioPort,
                                int8_t *gpioPin )
@@ -46,7 +68,7 @@ bool_t myGpioInit(gpioMap_t pin, gpioInit_t conf) {
 	gpioObtainPinInit( pin, &pinNamePort, &pinNamePin, &func,
 	                   &gpioPort, &gpioPin );
 
-	switch(conf):
+	switch(conf) {
 		case GPIO_ENABLE:
 			Chip_GPIO_Init(LPC_GPIO_PORT);
 			break;
@@ -58,7 +80,7 @@ bool_t myGpioInit(gpioMap_t pin, gpioInit_t conf) {
 			     SCU_MODE_INACT | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS,
 			     func
 			);
-			Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), GPIO_INPUT );
+			Chip_GPIO_SetDir(LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), GPIO_INPUT );
 			break;
 
 		case GPIO_OUTPUT:
@@ -74,6 +96,7 @@ bool_t myGpioInit(gpioMap_t pin, gpioInit_t conf) {
 
 		default:
 			return FALSE;
+	}
 
 	return retval;
 }

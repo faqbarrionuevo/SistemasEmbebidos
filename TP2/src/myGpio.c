@@ -1,5 +1,7 @@
 #include "myGpio.h"
 
+
+//Vector global que contiene todas las posibles configuraciones que pueden adoptar los GPIO
 static const gpioPinInfo_t gpioPinsInit[] = {
 
 		//{PinNamePortN ,PinNamePinN, PinFUNC, GpioPortN, GpioPinN}
@@ -40,6 +42,8 @@ void myBoardConfig(void) {
 	      myGpioInit( LED3, GPIO_OUTPUT );
 }
 
+
+//Esta función obtiene todos los datos requeridos del pin a configurar
 void gpioObtainPinInit( gpioMap_t pin,
                                int8_t *pinNamePort, int8_t *pinNamePin,
                                int8_t *func, int8_t *gpioPort,
@@ -53,8 +57,12 @@ void gpioObtainPinInit( gpioMap_t pin,
    *gpioPin     = gpioPinsInit[pin].GpioPinN;
 }
 
-bool_t myGpioInit(gpioMap_t pin, gpioInit_t conf) {
 
+
+//Función para inicializar un pin GPIO
+//Recibe el pin a configurar y la configuracion deseada
+//Devuelve false en caso de configuración es invalida
+bool_t myGpioInit(gpioMap_t pin, gpioInit_t conf) {
 
 	bool_t retval = TRUE;
 
@@ -64,9 +72,7 @@ bool_t myGpioInit(gpioMap_t pin, gpioInit_t conf) {
 	int8_t gpioPort = 0;
 	int8_t gpioPin = 0;
 
-
-	gpioObtainPinInit( pin, &pinNamePort, &pinNamePin, &func,
-	                   &gpioPort, &gpioPin );
+	gpioObtainPinInit( pin, &pinNamePort, &pinNamePin, &func, &gpioPort, &gpioPin );
 
 	switch(conf) {
 		case GPIO_ENABLE:
@@ -100,3 +106,33 @@ bool_t myGpioInit(gpioMap_t pin, gpioInit_t conf) {
 
 	return retval;
 }
+
+//Función para escribir en un pin GPIO
+void myGpioWrite(gpioMap_t pin, bool_t value){
+
+	    int8_t pinNamePort = 0;
+		int8_t pinNamePin = 0;
+		int8_t func = 0;
+		int8_t gpioPort = 0;
+		int8_t gpioPin = 0;
+
+		gpioObtainPinInit( pin, &pinNamePort, &pinNamePin, &func, &gpioPort, &gpioPin );
+
+		Chip_GPIO_SetPinState( LPC_GPIO_PORT, gpioPort, gpioPin, value);
+}
+
+//Función para leer el contenido de un pin GPIO
+bool_t myGpioRead(gpioMap_t pin){
+
+	    int8_t pinNamePort = 0;
+		int8_t pinNamePin = 0;
+		int8_t func = 0;
+		int8_t gpioPort = 0;
+		int8_t gpioPin = 0;
+
+		gpioObtainPinInit( pin, &pinNamePort, &pinNamePin, &func, &gpioPort, &gpioPin );
+
+		return (bool_t) Chip_GPIO_ReadPortBit( LPC_GPIO_PORT, gpioPort, gpioPin );
+
+}
+

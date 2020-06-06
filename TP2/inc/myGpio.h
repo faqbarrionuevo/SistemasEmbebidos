@@ -2,6 +2,7 @@
 #define _my_gpio_h_
 
 #include "stdint.h"
+#include "gpio_18xx_43xx.h"
 #include "chip.h"
 
 #ifndef FALSE
@@ -68,7 +69,7 @@ void myBoardConfig(void);
 bool_t myGpioInit(gpioMap_t pin, gpioInit_t conf);
 
 // Escribe en un puerto GPIO
-bool_t myGpioWrite(gpioMap_t pin, bool_t value);
+void myGpioWrite(gpioMap_t pin, bool_t value);
 
 // Lee un puerto GPIO
 bool_t myGpioRead(gpioMap_t pin);

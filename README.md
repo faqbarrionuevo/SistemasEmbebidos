@@ -6,7 +6,7 @@
 
 - [Barrionuevo Facundo](https://github.com/faqbarrionuevo/SistemasEmbebidos), Padrón: 99280 [Repo Grupo 3]
 - [Centofanti Ezequiel](https://github.com/CentofantiEze/Sistemas-Embebidos.git), Padrón: 100941   
-- Scheinkerman Lucas, Padrón: 100047
+- [Scheinkerman Lucas](https://github.com/LucasJSch/sistemas_embebidos_2020_1c), Padrón: 100047
 
 # Instalación de herramientas
 

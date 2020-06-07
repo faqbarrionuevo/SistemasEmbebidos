@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include "../inc/tp2.h"         // <= Su propia cabecera
 
+#include "board.h"
+
 //#include "../../../../libs/lpc_open/lpc_chip_43xx/inc/chip_lpc43xx.h"
 #include "myGpio.h"        // <= Biblioteca propia
 
@@ -18,6 +20,9 @@ int main( void )
 
    // Inicializar y configurar la plataforma
    myBoardConfig();
+   SystemCoreClockUpdate();
+   Board_Init();
+   SysTick_Config(SystemCoreClock / TICKRATE_HZ);
 
    // Crear varias variables del tipo booleano
    bool_t buttonValue = OFF;
@@ -30,7 +35,7 @@ int main( void )
 
       /* Retardo bloqueante durante 100ms */
       
-      delay( 100 );
+      myDelay( 100 );
       
       /* Si pasaron 10 segundos comienza a funcionar el programa que copia las
          acciones en BOTON al LED. Mientras espera titila el LED.  */
@@ -63,7 +68,7 @@ int main( void )
                // Si esta apagado mostrar por UART_USB "LED apagado."
                printf( "LED apagado.\r\n" );
             }
-            delay( 250 );
+            myDelay( 250 );
             
          }
       } else {

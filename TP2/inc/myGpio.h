@@ -31,6 +31,16 @@
 #define SCU_MODE_FUNC4                  0x4          // Selects pin function 4
 #define SCU_MODE_FUNC5                  0x5          // Selects pin function 5
 
+// Escalar utilizado para el computo de delays
+#define TICKRATE_HZ (1000)
+
+// Se define el callback del clock como la funcion
+// clock_callback()
+#ifndef TICK_OVER_RTOS
+   #define tickerCallback clock_callback
+#endif
+
+// Tipo de dato utilizado a modo de booleano
 typedef uint8_t bool_t;
 
 typedef enum {
@@ -51,6 +61,7 @@ typedef enum {
 	GPIO_ENABLE
 } gpioInit_t;
 
+
 typedef struct {
 	int8_t pinNamePortN;
 	int8_t PinNamePinN;
@@ -59,9 +70,10 @@ typedef struct {
 	int8_t GpioPinN;
 } gpioPinInfo_t;
 
-/* Define Tick Data Type */
+// Tipo de dato usado para computo de delays.
 typedef uint64_t tick_t;
 
+// Inicializa cada puerto a utilizar en la aplicacion.
 void myBoardConfig(void);
 
 // Inicializa un puerto GPIO como input o output
@@ -83,5 +95,11 @@ void myGpioObtainPinInit(gpioMap_t pin,
 		int8_t *func,
 		int8_t *gpioPort,
         int8_t *gpioPin );
+
+// Callback para cada vez que pasa un ciclo de clock
+void clock_callback(void);
+
+// Funcion para realizar delay.
+void myDelay(uint32_t tk);
 
 #endif

@@ -21,29 +21,31 @@ static const gpioPinInfo_t gpioPinsInit[] = {
 };
 
 void myBoardConfig(void) {
+
+	// Funcion para asegurarse de que el clock este bien configurado
 	SystemCoreClockUpdate();
 
 
 	// Inicializar GPIOs
-	      myGpioInit( 0, GPIO_ENABLE );
+	myGpioInit( 0, GPIO_ENABLE );
 
-	      // Configuracion de pines de entrada para Teclas de la EDU-CIAA-NXP
-	      myGpioInit( TEC1, GPIO_INPUT );
-	      myGpioInit( TEC2, GPIO_INPUT );
-	      myGpioInit( TEC3, GPIO_INPUT );
-	      myGpioInit( TEC4, GPIO_INPUT );
+	// Configuracion de pines de entrada para Teclas de la EDU-CIAA-NXP
+	myGpioInit( TEC1, GPIO_INPUT );
+	myGpioInit( TEC2, GPIO_INPUT );
+	myGpioInit( TEC3, GPIO_INPUT );
+    myGpioInit( TEC4, GPIO_INPUT );
 
-	      // Configuracion de pines de salida para Leds de la EDU-CIAA-NXP
-	      myGpioInit( LEDR, GPIO_OUTPUT );
-	      myGpioInit( LEDG, GPIO_OUTPUT );
-	      myGpioInit( LEDB, GPIO_OUTPUT );
-	      myGpioInit( LED1, GPIO_OUTPUT );
-	      myGpioInit( LED2, GPIO_OUTPUT );
-	      myGpioInit( LED3, GPIO_OUTPUT );
+	// Configuracion de pines de salida para Leds de la EDU-CIAA-NXP
+	myGpioInit( LEDR, GPIO_OUTPUT );
+	myGpioInit( LEDG, GPIO_OUTPUT );
+	myGpioInit( LEDB, GPIO_OUTPUT );
+	myGpioInit( LED1, GPIO_OUTPUT );
+	myGpioInit( LED2, GPIO_OUTPUT );
+	myGpioInit( LED3, GPIO_OUTPUT );
 }
 
 
-//Esta función obtiene todos los datos requeridos del pin a configurar
+// Obtiene todos los datos requeridos del pin a configurar
 void gpioObtainPinInit( gpioMap_t pin,
                                int8_t *pinNamePort, int8_t *pinNamePin,
                                int8_t *func, int8_t *gpioPort,
@@ -134,5 +136,21 @@ bool_t myGpioRead(gpioMap_t pin){
 
 		return (bool_t) Chip_GPIO_ReadPortBit( LPC_GPIO_PORT, gpioPort, gpioPin );
 
+}
+
+// Cuenta la cantidad de ticks del clock que pasaron
+static volatile uint32_t tick_count = 0;
+
+void myDelay(uint32_t tk)
+{
+   uint32_t end = tick_count + tk;
+   while(tick_count < end)
+      __WFI();
+}
+
+// Funcion que se llama cada vez que pasa un ciclo de clock
+void clock_callback(void)
+{
+   tick_count++;
 }
 

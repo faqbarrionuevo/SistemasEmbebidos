@@ -1,5 +1,5 @@
 /*============================================================================
- * Autor:
+ * Autor: Barrionuevo Facundo, Centofanti Ezequiel, Scheinkerman Lucas
  * Licencia:
  * Fecha:
  *===========================================================================*/
@@ -12,6 +12,17 @@
 
 //#include "../../../../libs/lpc_open/lpc_chip_43xx/inc/chip_lpc43xx.h"
 #include "myGpio.h"        // <= Biblioteca propia
+
+//Defines para la compilación condicional
+#define TP2_1 (1)
+
+#define TP2_2 (2)
+
+#define TP2_3 (3)
+
+#define TEST (TP2_1) //Aqui debe ir el numero de TP que queremos compilar / probar
+
+#if (TEST == TP2_1)    //Entre este if y el #endif va el codigo correspodiente a TP2_1
 
 // FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE ENCENDIDO O RESET.
 int main( void )
@@ -38,7 +49,7 @@ int main( void )
       myDelay( 100 );
       
       /* Si pasaron 10 segundos comienza a funcionar el programa que copia las
-         acciones en BOTON al LED. Mientras espera titila el LED.  */
+         acciones en BOTON al LED. */
       
       timeCount++;      
       
@@ -82,3 +93,22 @@ int main( void )
    // Sistema Operativo, como en el caso de un programa para PC.
    return 0;
 }
+
+#endif
+
+#if (TEST == TP2_2)
+
+//Acá iría el codigo de TP2_2
+//En este codigo se prueban las 3 funciones pedidas en TP2_1, por eso acá no hay código
+
+#endif
+
+#if (TEST == TP2_3)
+
+//Acá iría el codigo de TP2_3
+//En este codigo se prueban las 3 funciones pedidas en TP2_1, por eso acá no hay código
+
+#endif
+
+
+

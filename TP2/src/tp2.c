@@ -46,7 +46,7 @@ int main( void )
 
       /* Retardo bloqueante durante 100ms */
       
-      myDelay( 100 );
+      //myDelay( 100 );
       
       /* Si pasaron 10 segundos comienza a funcionar el programa que copia las
          acciones en BOTON al LED. */
@@ -79,7 +79,7 @@ int main( void )
                // Si esta apagado mostrar por UART_USB "LED apagado."
                printf( "LED apagado.\r\n" );
             }
-            myDelay( 250 );
+            //myDelay( 250 );
             
          }
       } else {

@@ -140,17 +140,23 @@ bool_t myGpioRead(gpioMap_t pin){
 
 // Cuenta la cantidad de ticks del clock que pasaron
 static volatile uint32_t tick_count = 0;
-
-void myDelay(uint32_t tk)
+/*
+void delay( tick_t duration_ms )
 {
-   uint32_t end = tick_count + tk;
-   while(tick_count < end)
-      __WFI();
+   tick_t startTime = tickRead();
+   while ( (tick_t)(tickRead() - startTime) < duration_ms );
 }
-
+*/
 // Funcion que se llama cada vez que pasa un ciclo de clock
 void clock_callback(void)
 {
    tick_count++;
+}
+
+void myGpioToggle(gpioMap_t pin){
+
+	bool_t pinValue = myGpioRead(pin);
+	myGpioWrite(pin, !pinValue);
+
 }
 

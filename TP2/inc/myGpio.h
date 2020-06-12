@@ -4,6 +4,7 @@
 #include "stdint.h"
 #include "chip.h"
 
+
 #ifndef FALSE
 #define FALSE  0
 #endif
@@ -42,6 +43,9 @@
 
 // Tipo de dato utilizado a modo de booleano
 typedef uint8_t bool_t;
+
+// Tipo de dato utilizado para el delay
+//typedef uint64_t tick_t;
 
 typedef enum {
 TEC1,
@@ -85,6 +89,9 @@ void myGpioWrite(gpioMap_t pin, bool_t value);
 // Lee un puerto GPIO
 bool_t myGpioRead(gpioMap_t pin);
 
+// Alterna el valor de un pin
+void myGpioToggle(gpioMap_t pin);
+
 // Llena los punteros con los valores de puertos, pines y funciones
 // correspondientes al periferico que se desea utilizar.
 // Es una funcion auxiliar que sirve para mapear facilmente perifericos
@@ -100,6 +107,6 @@ void myGpioObtainPinInit(gpioMap_t pin,
 void clock_callback(void);
 
 // Funcion para realizar delay.
-void myDelay(uint32_t tk);
+//void delay( tick_t duration_ms );
 
 #endif

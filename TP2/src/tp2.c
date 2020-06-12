@@ -7,7 +7,7 @@
 // Inlcusiones
 #include <stdio.h>
 #include "../inc/tp2.h"         // <= Su propia cabecera
-
+#include "sapi_delay.h"
 #include "board.h"
 
 //#include "../../../../libs/lpc_open/lpc_chip_43xx/inc/chip_lpc43xx.h"
@@ -46,7 +46,7 @@ int main( void )
 
       /* Retardo bloqueante durante 100ms */
       
-      //myDelay( 100 );
+      delay( 100 );
       
       /* Si pasaron 10 segundos comienza a funcionar el programa que copia las
          acciones en BOTON al LED. */
@@ -79,12 +79,12 @@ int main( void )
                // Si esta apagado mostrar por UART_USB "LED apagado."
                printf( "LED apagado.\r\n" );
             }
-            //myDelay( 250 );
+            delay( 250 );
             
          }
       } else {
          // Intercambiar el valor de CIAA_BOARD_LED
-         //myGpioToggle(CIAA_BOARD_LED);
+         myGpioToggle(CIAA_BOARD_LED);
       }
    }
 

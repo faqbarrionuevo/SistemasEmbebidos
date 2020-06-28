@@ -4,7 +4,7 @@
  * Fecha:
  *===========================================================================*/
 
-//Código correspondiente al punto 3 del TP3
+//Cï¿½digo correspondiente al punto 3 del TP3
 
 
 // Inlcusiones
@@ -30,13 +30,13 @@
 
 
 //----------------------VARIABLES PARA ELEGIR QUE PUNTO PROBAR-------------------------------//
-//Para probar punto A poner puntoa en 1, puntob en 0 y puntoc en 0
-//Para probar punto B poner puntoa en 0, puntob en 1 y puntoc en 0
-//Para probar punto C poner puntoa en 0, puntob en 1 y puntoc en 1
+//Para probar punto A poner PUNTO_A en 1, PUNTO_B en 0 y PUNTO_C en 0
+//Para probar punto B poner PUNTO_A en 0, PUNTO_B en 1 y PUNTO_C en 0
+//Para probar punto C poner PUNTO_A en 0, PUNTO_B en 1 y PUNTO_C en 1
 
-bool_t puntoa = 1;                          //Sin interrupcion
-bool_t puntob = 0;                          //Con interrucpion por recepcion
-bool_t puntoc = 0;                          //Con interrupciones y pulsadores
+#define  PUNTO_A  1                          //Sin interrupcion
+#define  PUNTO_B  0                          //Con interrucpion por recepcion
+#define  PUNTO_C  0                          //Con interrupciones y pulsadores
 
 //PUNTO A: 3 CARACTERES PRENDEN Y APAGAN LOS 3 LEDS
 //PUNTO B: 3 CARACTERES PRENDEN Y APAGAN LOS 3 LEDS, ESTA VEZ CON INTERRUPCION DE UART_RX
@@ -67,7 +67,7 @@ void butonNow3(myGpioMap_t boton);
 void butonNow4(myGpioMap_t boton);
 void inicializarBotones();                 //Funcion para inicializar los botones
 
-void onRx(void *noUsado) {                //Funcion que se llamará cuando se interrumpa via UART_RX
+void onRx(void *noUsado) {                //Funcion que se llamarï¿½ cuando se interrumpa via UART_RX
 	c = uartRxRead(UART_USB);
 	printf("Caracter recibido: %c\r\n", c);
 }
@@ -82,14 +82,14 @@ int main(void) {
 	Board_Init();
 	SysTick_Config(SystemCoreClock / TICKRATE_HZ);
 
-	if (puntoc) {
+	if (PUNTO_C) {
 		delayInit(&actualizarBoton, 40);
 		inicializarBotones();
 	}
 
 	uartConfig(UART_USB, 115200); //Inicializamos UART
 
-	if (puntob) {
+	if (PUNTO_B) {
 		uartCallbackSet(UART_USB, UART_RECEIVE, onRx, NULL); // Seteo un callback al evento de recepcion y habilito su interrupcion
 		uartInterrupt(UART_USB, TRUE);                       // Habilito todas las interrupciones de UART_USB
 	}
@@ -101,7 +101,7 @@ int main(void) {
 
 	while (TRUE) {
 
-		if (puntoa) {
+		if (PUNTO_A) {
 
 			printf("Main menu: \r\n");
 			printf("Para encender Led1: Presione A\r\n");
@@ -116,7 +116,7 @@ int main(void) {
 			}
 		}
 
-		if (puntoc) {
+		if (PUNTO_C) {
 			if (delayRead(&actualizarBoton)) {                //Actualizamos estado de los boton todo el tiempo
 
 						butonNow1(CIAA_BOARD_BUTTON1);
@@ -130,13 +130,13 @@ int main(void) {
 					}
 		}
 
-		//Cuando ya llegó el dato
+		//Cuando ya llegï¿½ el dato
 
-		if (puntob) {
-			datoLeido = (uint8_t) c;                //Paso lo que recibí a la variable datoLeido para el switch (asi funciona para punto a b y c)
+		if (PUNTO_B) {
+			datoLeido = (uint8_t) c;                //Paso lo que recibï¿½ a la variable datoLeido para el switch (asi funciona para punto a b y c)
 		}
 
-		if(puntoa){
+		if(PUNTO_A){
 		uartWriteByte(UART_USB, datoLeido);        // Se reenvia el dato a la UART_USB realizando un eco de lo que llega
 		printf("\r\n");
 		}

@@ -8,6 +8,7 @@
 #define _APP_H_
 
 /*==================[inclusiones]============================================*/
+#include "myGpio.h"
 
 /*==================[c++]====================================================*/
 
@@ -32,8 +33,25 @@ extern "C" {
 #define CIAA_BOARD_LED3 myLED3
 
 /*==================[declaraciones de datos externos]========================*/
+typedef enum {
+	STATE_BUTTON_UP,
+	STATE_BUTTON_DOWN,
+	STATE_BUTTON_FALLING,
+	STATE_BUTTON_RISING
+} buttonState_t;
+
+typedef struct {
+	buttonState_t button_state;
+	bool_t flag_falling;
+	bool_t flag_rising;
+	myGpioMap_t button;
+	myGpioMap_t led;
+} buttonStateStruct;
 
 /*==================[declaraciones de funciones externas]====================*/
+void processButton(buttonStateStruct* button);
+void inicializarBotones();
+void inicializarBoton(buttonStateStruct* button_state, myGpioMap_t button, myGpioMap_t led);
 
 /*==================[c++]====================================================*/
 #ifdef __cplusplus

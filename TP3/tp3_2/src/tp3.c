@@ -16,25 +16,10 @@
 #include "sapi_uart.h"
 #include "board.h"
 
-//#include "../../../../libs/lpc_open/lpc_chip_43xx/inc/chip_lpc43xx.h"
-
-typedef enum {
-	STATE_BUTTON_UP,
-	STATE_BUTTON_DOWN,
-	STATE_BUTTON_FALLING,
-	STATE_BUTTON_RISING
-} buttonState_t;
-
-void butonNow1(myGpioMap_t boton);
-void butonNow2(myGpioMap_t boton);
-void butonNow3(myGpioMap_t boton);
-void butonNow4(myGpioMap_t boton);
-void inicializarBotones();
-
-buttonState_t estadoBoton1;    //Variable para indicar el estado del boton
-buttonState_t estadoBoton2;    //Variable para indicar el estado del boton
-buttonState_t estadoBoton3;    //Variable para indicar el estado del boton
-buttonState_t estadoBoton4;    //Variable para indicar el estado del boton
+static buttonStateStruct estadoBoton1;    //Variable para indicar el estado del boton 1
+static buttonStateStruct estadoBoton2;    //Variable para indicar el estado del boton 2
+static buttonStateStruct estadoBoton3;    //Variable para indicar el estado del boton 3
+static buttonStateStruct estadoBoton4;    //Variable para indicar el estado del boton 4
 
 // FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE ENCENDIDO O RESET.
 int main(void) {
@@ -58,14 +43,10 @@ int main(void) {
 
 		// Actualizo botones cada actualizarBoton
 		if (delayRead(&actualizarBoton)) {
-
-			butonNow1(CIAA_BOARD_BUTTON1);
-
-			butonNow2(CIAA_BOARD_BUTTON2);
-
-			butonNow3(CIAA_BOARD_BUTTON3);
-
-			butonNow4(CIAA_BOARD_BUTTON4);
+			processButton(&estadoBoton1);
+			processButton(&estadoBoton2);
+			processButton(&estadoBoton3);
+			processButton(&estadoBoton4);
 		}
 
 	}
@@ -73,295 +54,66 @@ int main(void) {
 	return 0;
 }
 
-void butonNow1(myGpioMap_t boton) {           //Procesar estado actual del boton
+void processButton(buttonStateStruct* button) {           //Procesar estado actual del boton
 
-	static bool_t flagFalling = 0;
-	static bool_t flagRising = 0;
-
-	switch (estadoBoton1) {
+	switch (button->button_state) {
 
 	case STATE_BUTTON_UP:
 
-		if (!myGpioRead(boton)) {
-			estadoBoton1 = STATE_BUTTON_FALLING;
+		if (!myGpioRead(button->button)) {
+			button->button_state = STATE_BUTTON_FALLING;
 		}
 		break;
 
 	case STATE_BUTTON_DOWN:
 		/* CHECK TRANSITION CONDITIONS */
-		if (myGpioRead(boton)) {
-			estadoBoton1 = STATE_BUTTON_RISING;
+		if (myGpioRead(button->button)) {
+			button->button_state = STATE_BUTTON_RISING;
 
 		}
 		break;
 
 	case STATE_BUTTON_FALLING:
 		/* ENTRY */
-		if (flagFalling == 0) {
-			flagFalling = 1;
+		if (button->flag_falling == 0) {
+			button->flag_falling = 1;
 			break;
 		}
 		/* CHECK TRANSITION CONDITIONS */
-		if (!myGpioRead(boton)) {
-			estadoBoton1 = STATE_BUTTON_DOWN;
-			myGpioWrite(CIAA_BOARD_LEDR, 1);
+		if (!myGpioRead(button->button)) {
+			button->button_state = STATE_BUTTON_DOWN;
+			myGpioWrite(button->led, 1);
 			printf("F\r\n");
 
 		} else {
-			estadoBoton1 = STATE_BUTTON_UP;
+			button->button_state = STATE_BUTTON_UP;
 		}
 
 		/* LEAVE */
-		if (estadoBoton1 != STATE_BUTTON_FALLING) {
-			flagFalling = 0;
+		if (button->button_state != STATE_BUTTON_FALLING) {
+			button->flag_falling = 0;
 		}
 		break;
 
 	case STATE_BUTTON_RISING:
 		/* ENTRY */
-		if (flagRising == 0) {
-			flagRising = 1;
+		if (button->flag_rising == 0) {
+			button->flag_rising = 1;
 
 			break;
 		}
 		/* CHECK TRANSITION CONDITIONS */
-		if (myGpioRead(boton)) {
-			estadoBoton1 = STATE_BUTTON_UP;
-			myGpioWrite(CIAA_BOARD_LEDR, 0); //Finalmente se dejó de presionar
+		if (myGpioRead(button->button)) {
+			button->button_state = STATE_BUTTON_UP;
+			myGpioWrite(button->led, 0); //Finalmente se dejó de presionar
 
 		} else {
-			estadoBoton1 = STATE_BUTTON_DOWN;
+			button->button_state = STATE_BUTTON_DOWN;
 		}
 
 		/* LEAVE */
-		if (estadoBoton1 != STATE_BUTTON_RISING) {
-			flagRising = 0;
-
-			break;
-
-			default:
-			break;
-
-		}
-
-	}
-
-}
-
-void butonNow2(myGpioMap_t boton) {           //Procesar estado actual del boton
-
-	static bool_t flagFalling = 0;
-	static bool_t flagRising = 0;
-
-	switch (estadoBoton2) {
-
-	case STATE_BUTTON_UP:
-
-		if (!myGpioRead(boton)) {
-			estadoBoton2 = STATE_BUTTON_FALLING;
-		}
-		break;
-
-	case STATE_BUTTON_DOWN:
-		/* CHECK TRANSITION CONDITIONS */
-		if (myGpioRead(boton)) {
-			estadoBoton2 = STATE_BUTTON_RISING;
-
-		}
-		break;
-
-	case STATE_BUTTON_FALLING:
-		/* ENTRY */
-		if (flagFalling == 0) {
-			flagFalling = 1;
-			break;
-		}
-		/* CHECK TRANSITION CONDITIONS */
-		if (!myGpioRead(boton)) {
-			estadoBoton2 = STATE_BUTTON_DOWN;
-			myGpioWrite(CIAA_BOARD_LED1, 1);
-			printf("A\r\n");
-
-		} else {
-			estadoBoton2 = STATE_BUTTON_UP;
-		}
-
-		/* LEAVE */
-		if (estadoBoton2 != STATE_BUTTON_FALLING) {
-			flagFalling = 0;
-		}
-		break;
-
-	case STATE_BUTTON_RISING:
-		/* ENTRY */
-		if (flagRising == 0) {
-			flagRising = 1;
-
-			break;
-		}
-		/* CHECK TRANSITION CONDITIONS */
-		if (myGpioRead(boton)) {
-			estadoBoton2 = STATE_BUTTON_UP;
-			myGpioWrite(CIAA_BOARD_LED1, 0); //Finalmente se dejó de presionar
-
-		} else {
-			estadoBoton2 = STATE_BUTTON_DOWN;
-		}
-
-		/* LEAVE */
-		if (estadoBoton2 != STATE_BUTTON_RISING) {
-			flagRising = 0;
-			//myGpioWrite(myLED2, 0);
-
-			break;
-
-			default:
-			break;
-
-		}
-
-	}
-
-}
-
-void butonNow3(myGpioMap_t boton) {           //Procesar estado actual del boton
-
-	static bool_t flagFalling = 0;
-	static bool_t flagRising = 0;
-
-	switch (estadoBoton3) {
-
-	case STATE_BUTTON_UP:
-
-		if (!myGpioRead(boton)) {
-			estadoBoton3 = STATE_BUTTON_FALLING;
-		}
-		break;
-
-	case STATE_BUTTON_DOWN:
-		/* CHECK TRANSITION CONDITIONS */
-		if (myGpioRead(boton)) {
-			estadoBoton3 = STATE_BUTTON_RISING;
-
-		}
-		break;
-
-	case STATE_BUTTON_FALLING:
-		/* ENTRY */
-		if (flagFalling == 0) {
-			flagFalling = 1;
-			break;
-		}
-		/* CHECK TRANSITION CONDITIONS */
-		if (!myGpioRead(boton)) {
-			estadoBoton3 = STATE_BUTTON_DOWN;
-			myGpioWrite(CIAA_BOARD_LED2, 1);
-			printf("C\r\n");
-
-		} else {
-			estadoBoton3 = STATE_BUTTON_UP;
-		}
-
-		/* LEAVE */
-		if (estadoBoton3 != STATE_BUTTON_FALLING) {
-			flagFalling = 0;
-		}
-		break;
-
-	case STATE_BUTTON_RISING:
-		/* ENTRY */
-		if (flagRising == 0) {
-			flagRising = 1;
-
-			break;
-		}
-		/* CHECK TRANSITION CONDITIONS */
-		if (myGpioRead(boton)) {
-			estadoBoton3 = STATE_BUTTON_UP;
-			myGpioWrite(CIAA_BOARD_LED2, 0); //Finalmente se dejó de presionar
-
-		} else {
-			estadoBoton3 = STATE_BUTTON_DOWN;
-		}
-
-		/* LEAVE */
-		if (estadoBoton3 != STATE_BUTTON_RISING) {
-			flagRising = 0;
-
-			break;
-
-			default:
-			break;
-
-		}
-
-	}
-
-}
-
-void butonNow4(myGpioMap_t boton) {           //Procesar estado actual del boton
-
-	static bool_t flagFalling = 0;
-	static bool_t flagRising = 0;
-
-	switch (estadoBoton4) {
-
-	case STATE_BUTTON_UP:
-
-		if (!myGpioRead(boton)) {
-			estadoBoton4 = STATE_BUTTON_FALLING;
-		}
-		break;
-
-	case STATE_BUTTON_DOWN:
-		/* CHECK TRANSITION CONDITIONS */
-		if (myGpioRead(boton)) {
-			estadoBoton4 = STATE_BUTTON_RISING;
-
-		}
-		break;
-
-	case STATE_BUTTON_FALLING:
-		/* ENTRY */
-		if (flagFalling == 0) {
-			flagFalling = 1;
-			break;
-		}
-		/* CHECK TRANSITION CONDITIONS */
-		if (!myGpioRead(boton)) {
-			estadoBoton4 = STATE_BUTTON_DOWN;
-			myGpioWrite(CIAA_BOARD_LED3, 1);
-			printf("U\r\n");
-
-		} else {
-			estadoBoton4 = STATE_BUTTON_UP;
-		}
-
-		/* LEAVE */
-		if (estadoBoton4 != STATE_BUTTON_FALLING) {
-			flagFalling = 0;
-		}
-		break;
-
-	case STATE_BUTTON_RISING:
-		/* ENTRY */
-		if (flagRising == 0) {
-			flagRising = 1;
-
-			break;
-		}
-		/* CHECK TRANSITION CONDITIONS */
-		if (myGpioRead(boton)) {
-			estadoBoton4 = STATE_BUTTON_UP;
-			myGpioWrite(CIAA_BOARD_LED3, 0); //Finalmente se dejó de presionar
-
-		} else {
-			estadoBoton4 = STATE_BUTTON_DOWN;
-		}
-
-		/* LEAVE */
-		if (estadoBoton4 != STATE_BUTTON_RISING) {
-			flagRising = 0;
+		if (button->button_state != STATE_BUTTON_RISING) {
+			button->flag_rising = 0;
 
 			break;
 
@@ -375,8 +127,16 @@ void butonNow4(myGpioMap_t boton) {           //Procesar estado actual del boton
 }
 
 void inicializarBotones() {
-	estadoBoton1 = STATE_BUTTON_UP;
-	estadoBoton2 = STATE_BUTTON_UP;
-	estadoBoton3 = STATE_BUTTON_UP;
-	estadoBoton4 = STATE_BUTTON_UP;
+	inicializarBoton(&estadoBoton1, CIAA_BOARD_BUTTON1, CIAA_BOARD_LEDR);
+	inicializarBoton(&estadoBoton2, CIAA_BOARD_BUTTON2, CIAA_BOARD_LED1);
+	inicializarBoton(&estadoBoton3, CIAA_BOARD_BUTTON3, CIAA_BOARD_LED2);
+	inicializarBoton(&estadoBoton4, CIAA_BOARD_BUTTON4, CIAA_BOARD_LED3);
+}
+
+void inicializarBoton(buttonStateStruct* button_state, myGpioMap_t button, myGpioMap_t led) {
+	button_state->button_state = STATE_BUTTON_UP;
+	button_state->flag_falling = 0;
+	button_state->flag_rising = 0;
+	button_state->button = button;
+	button_state->led = led;
 }

@@ -32,6 +32,7 @@ extern "C" {
 #define CIAA_BOARD_BUTTON4 myTEC4
 #define CIAA_BOARD_LED3 myLED3
 
+
 /*==================[declaraciones de datos externos]========================*/
 typedef enum {
 	STATE_BUTTON_UP,

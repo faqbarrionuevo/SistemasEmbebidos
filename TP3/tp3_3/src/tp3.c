@@ -4,19 +4,18 @@
  * Fecha:
  *===========================================================================*/
 
-//C�digo correspondiente al punto 3 del TP3
+//Codigo correspondiente al punto 3 del TP3
 
 
 // Inlcusiones
 #include "../../tp3_3/inc/tp3.h"         // <= Su propia cabecera
 
 #include <stdio.h>
-#include <string.h>
 
 #include "../../tp3_3/inc/myGpio.h"        // <= Biblioteca propia
 #include "sapi_delay.h"
 #include "sapi_uart.h"
-//#include "sapi_sleep.h"
+#include "sapi_sleep.h"
 #include "board.h"
 
 //------------------------------IMPORTANTE-----------------------------------------------------//
@@ -33,12 +32,11 @@
 //----------------------VARIABLES PARA ELEGIR QUE PUNTO PROBAR-------------------------------//
 //Para probar punto A poner PUNTO_A en 1, PUNTO_B en 0 y PUNTO_C en 0
 //Para probar punto B poner PUNTO_A en 0, PUNTO_B en 1 y PUNTO_C en 0
-//Para probar punto C poner PUNTO_A en 0, PUNTO_B en 1 y PUNTO_C en 1
+//Para probar punto C poner PUNTO_A en 0, PUNTO_B en 0 y PUNTO_C en 1
 
-#define  PUNTO_A  		1                    // Sin interrupcion
+#define  PUNTO_A  		0                    // Sin interrupcion
 #define  PUNTO_B  		0                    // Con interrucpion por recepcion
-#define  PUNTO_C        0                    // Con interrupciones y pulsadores
-#define  USING_WINDOWS  0                    // Cambia el string de new line a modo windows o modo unix. Comentar esta linea si estas en unix.
+#define  PUNTO_C        1                    // Con interrupciones y pulsadores
 
 //PUNTO A: 3 CARACTERES PRENDEN Y APAGAN LOS 3 LEDS
 //PUNTO B: 3 CARACTERES PRENDEN Y APAGAN LOS 3 LEDS, ESTA VEZ CON INTERRUPCION DE UART_RX
@@ -62,6 +60,16 @@ void onRxCallback(void *noUsado) {                //Funcion que se llamara cuand
 	printf("Caracter recibido: %c%s", callback_char, newline);
 }
 
+void printMenu() {
+	printf("%s %s", "Main menu:", newline);
+	printf("%s %s", "Para encender Led1: Presione A", newline);
+	printf("%s %s", "Para encender Led2: Presione B", newline);
+	printf("%s %s", "Para encender Led3: Presione 3", newline);
+	printf("%s %s", "Para apagar Led1: Presione D", newline);
+	printf("%s %s", "Para apagar Led2: Presione 5", newline);
+	printf("%s %s", "Para apagar Led3: Presione V", newline);
+}
+
 // FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE ENCENDIDO O RESET.
 int main(void) {
 	// ---------- CONFIGURACIONES ------------------------------
@@ -79,7 +87,7 @@ int main(void) {
 
 	uartConfig(UART_USB, 115200); //Inicializamos UART
 
-	if (PUNTO_B) {
+	if (PUNTO_B || PUNTO_C) {
 		uartCallbackSet(UART_USB, UART_RECEIVE, onRxCallback, NULL); // Seteo un callback al evento de recepcion y habilito su interrupcion
 		uartInterrupt(UART_USB, TRUE);                       		 // Habilito todas las interrupciones de UART_USB
 	}
@@ -91,22 +99,13 @@ int main(void) {
 
 	while (TRUE) {
 		if (PUNTO_A) {
-			printf("%s %s", "Main menu:", newline);
-			printf("%s %s", "Para encender Led1: Presione A", newline);
-			printf("%s %s", "Para encender Led2: Presione B", newline);
-			printf("%s %s", "Para encender Led3: Presione 3", newline);
-			printf("%s %s", "Para apagar Led1: Presione D", newline);
-			printf("%s %s", "Para apagar Led2: Presione 5", newline);
-			printf("%s %s", "Para apagar Led3: Presione V", newline);
-
+			printMenu();
 			while (!uartReadByte(UART_USB, &datoLeido)) {     //Espero hasta que ingresen un dato
-
 			}
 		}
 
 		if (PUNTO_C) {
 			if (delayRead(&actualizarBoton)) {                //Actualizamos estado de los botones todo el tiempo
-
 						processButton(&estadoBoton1);
 						processButton(&estadoBoton2);
 						processButton(&estadoBoton3);
@@ -117,7 +116,7 @@ int main(void) {
 
 		//Cuando ya llego el dato
 
-		if (PUNTO_B) {
+		if (PUNTO_B || PUNTO_C) {
 			datoLeido = (uint8_t) callback_char;                //Paso lo que recibi a la variable datoLeido para el switch (asi funciona para punto a b y c)
 		}
 

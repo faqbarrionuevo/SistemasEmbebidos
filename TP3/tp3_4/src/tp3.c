@@ -4,7 +4,7 @@
  * Fecha:
  *===========================================================================*/
 
-//Código correspondiente al punto 4 del TP3
+//Cï¿½digo correspondiente al punto 4 del TP3
 // Inlcusiones
 #include "../../tp3_4/inc/tp3.h"         // <= Su propia cabecera
 
@@ -24,6 +24,16 @@
 //PUNTO B: 3 3 LEDS PRENDIDOS CON DIFERENTE BRILLO Y CARACTERES PARA AUMENTAR Y DISMINUIR EL MISMO
 
 //---------------------VARIABLES PARA ELEGIR QUE PUNTO PROBAR-------------------------------//
+
+void printMenu() {
+	printf("Main menu: \r\n");
+	printf("Para aumentar brillo del Led1: Presione A\r\n");
+	printf("Para aumentar brillo del Led2: Presione B\r\n");
+	printf("Para aumentar brillo del Led3: Presione 3\r\n");
+	printf("Para disminuir brillo del Led1: Presione D\r\n");
+	printf("Para disminuir brillo del Led2: Presione 5\r\n");
+	printf("Para disminuir brillo del Led3: Presione V\r\n");
+}
 
 // FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE ENCENDIDO O RESET.
 int main(void) {
@@ -73,84 +83,72 @@ int main(void) {
 
 		if (PUNTO_B) {
 
-			printf("Main menu: \r\n");
-			printf("Para aumentar brillo del Led1: Presione A\r\n");
-			printf("Para aumentar brillo del Led2: Presione B\r\n");
-			printf("Para aumentar brillo del Led3: Presione 3\r\n");
-			printf("Para disminuir brillo del Led1: Presione D\r\n");
-			printf("Para disminuir brillo del Led2: Presione 5\r\n");
-			printf("Para disminuir brillo del Led3: Presione V\r\n");
+			printMenu();
 
 			while (!uartReadByte(UART_USB, &datoLeido)) { //Espero hasta que ingresen un dato
 
 			}
 
-			//Cuando ya llegó el dato
+			//Cuando ya llegï¿½ el dato
 
 			uartWriteByte(UART_USB, datoLeido); // Se reenvia el dato a la UART_USB realizando un eco de lo que llega
 			printf("\r\n");
+			procesarDato(datoLeido, &dutyCycle1, &dutyCycle2, &dutyCycle3);
 
-			switch (datoLeido) {
-
-			case 'A':                                   //Prender Led1
-
-				if (dutyCycle1 == MAX_DUTY)
-					printf("Brillo al maximo\r\n");
-				else
-					dutyCycle1++;
-
-				break;
-			case 'B':                                   //Prender Led2
-
-				if (dutyCycle2 == MAX_DUTY)
-					printf("Brillo al maximo\r\n");
-				else
-					dutyCycle2++;
-
-				break;
-			case '3':                                   //Prender Led3
-
-				if (dutyCycle3 == MAX_DUTY)
-					printf("Brillo al maximo\r\n");
-				else
-					dutyCycle3++;
-
-				break;
-			case 'D':                                   //Apagar Led1
-
-				if (dutyCycle1 == MIN_DUTY)
-					printf("Brillo al minimo\r\n");
-				else
-					dutyCycle1--;
-
-				break;
-			case '5':                                   //Apagar Led2
-
-				if (dutyCycle2 == MIN_DUTY)
-					printf("Brillo al minimo\r\n");
-				else
-					dutyCycle2--;
-
-				break;
-			case 'V':                                   //Apagar Led3
-
-				if (dutyCycle3 == MIN_DUTY)
-					printf("Brillo al minimo\r\n");
-				else
-					dutyCycle3--;
-
-				break;
-
-			default:
-				printf("Caracter no valido\r\n");
-				break;
-
-			}
 		}
 
 	}
 
 	return 0;
+}
+
+void procesarDato(uint8_t datoLeido, uint8_t* dutyCycle1, uint16_t* dutyCycle2, uint16_t* dutyCycle3) {
+	switch (datoLeido) {
+		case 'A':                                   //Prender Led1
+		case 'a':
+			if ((*dutyCycle1) == MAX_DUTY)
+				printf("Brillo al maximo\r\n");
+			else
+				(*dutyCycle1)++;
+			break;
+		case 'B':
+		case 'b':                                   //Prender Led2
+			if ((*dutyCycle2) == MAX_DUTY)
+				printf("Brillo al maximo\r\n");
+			else
+				(*dutyCycle2)++;
+			break;
+		case '3':                                   //Prender Led3
+			if ((*dutyCycle3) == MAX_DUTY)
+				printf("Brillo al maximo\r\n");
+			else
+				(*dutyCycle3)++;
+			break;
+		case 'D':                                   //Apagar Led1
+		case 'd':
+			if ((*dutyCycle1) == MIN_DUTY)
+				printf("Brillo al minimo\r\n");
+			else
+				(*dutyCycle1)--;
+			break;
+		case '5':                                   //Apagar Led2
+			if ((*dutyCycle2) == MIN_DUTY)
+				printf("Brillo al minimo\r\n");
+			else
+				(*dutyCycle2)--;
+			break;
+		case 'V':                                   //Apagar Led3
+		case 'v':
+			if ((*dutyCycle3) == MIN_DUTY)
+				printf("Brillo al minimo\r\n");
+			else
+				(*dutyCycle3)--;
+			break;
+		default:
+			printf("Caracter no valido\r\n");
+			break;
+
+	}
 }
 
 
